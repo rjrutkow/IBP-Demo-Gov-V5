@@ -109,6 +109,27 @@ function sensorReading(sensorReading) {
             var basicEvent = factory.newEvent('org.accordproject.perishablegoods', 'TransactionCompletedEvent');
             emit(basicEvent);
             return response;
+        })
+        .then(function () {
+            //Setup Request
+            var options = {
+                url: 'https://bluewolf-gov--bc.cs32.my.salesforce.com/services/data/v40.0/sobjects/Sensor_Reading__e/',
+                body: '{"Description__c" : "Salmonella Detected","Humidity__c" :'+ sensorReading.humidity +',"Location__c" : "United States","Temperature__c" :'+ sensorReading.centigrade +'}',
+                headers: {
+                  	'Content-Type': 'application/json',
+                    'Authorization': 'OAuth 00Dr00000008v4T!AR4AQH1dN61SzBD9ZD4i51yCs0aWjVbRYvoiw_S0d8qROYwQ5j6KUG9yHgDKDsK.KGrkny75p.lvo3che3D1lu7tTpQNBAX.'
+                }
+            };
+
+            //Setup Callback
+            function callback(error, response, body) {
+                  console.log('Body Sent = ' + options.body);
+                  console.log('Status Code Received = ' + response.statusCode);
+                  console.log('Body Received = ' + response.body);
+              }
+            
+              request.post(options, callback);
+            
         });
 }
 
